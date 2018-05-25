@@ -18,8 +18,6 @@ What is the Jack's desk number?
 
 '''
 
-
-
 def print_solution():
     ''' helper method to run the code '''
     find_desk_num(family_scenarios(max_age=18, max_kids=6))

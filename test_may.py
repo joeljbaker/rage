@@ -29,6 +29,5 @@ class FamilyScenariosTest(unittest.TestCase):
         kids = [fam for fam in family_scenarios(max_age=2, max_kids=2) if len(fam)==2]
         self.assertEqual(3, len(kids)) # make sure the (2,1) option has been filtered out
 
-
 if __name__ == '__main__':
     unittest.main()
