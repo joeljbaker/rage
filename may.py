@@ -48,8 +48,9 @@ def find_desk_num(scenarios):
             print "Desk num %i for Jack's age of %i" % (desk_num, ages[0])
 
 
-def family_scenarios(max_age=18, max_kids=5):
+def family_scenarios(max_age=18, max_kids=10):
     ''' generate a list of all unique permutations of children's ages.
+        But only include permutations where Jack's age would be believable.
         eg: (1,2) is a family of two children, aged 1 and 2
         max_age: oldest age of a child
         max_kids: largest family size
@@ -60,7 +61,7 @@ def family_scenarios(max_age=18, max_kids=5):
         # sort each tuple and then convert to set so that [(1,2), (2,1)] is just represented once
         # may well be an option in itertools to handle the nCr uniqueness. who knows?
         # also would be nice to preserve the original ordering whilst removing the duplicates
-        kids.extend(set([tuple(sorted(a)) for a in itertools.product(range(1, max_age+1), repeat=num_kids)]))
+        kids.extend(set([tuple(sorted(a)) for a in itertools.product(range(1, max_age+1), repeat=num_kids) if calc_age(a)<117]))
     return kids
 
 def build_deskmap(scenarios):
@@ -71,7 +72,7 @@ def build_deskmap(scenarios):
     for kids_ages in scenarios:
         desk_num = sum(kids_ages)
         num_kids = len(kids_ages)
-        jack_age = _calc_age(kids_ages)
+        jack_age = calc_age(kids_ages)
         if jack_age > 117:  # oldest person in the world is currently 117. Oldest father is 94 or something...
             continue
         val = (jack_age, num_kids)
@@ -81,7 +82,7 @@ def build_deskmap(scenarios):
         deskmap[desk_num][val].append(kids_ages)
     return deskmap
 
-def _calc_age(kids):
+def calc_age(kids):
     ''' Jack's age is the product of his children's ages. Obviously '''
 
     jack_age  = 1

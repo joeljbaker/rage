@@ -1,5 +1,5 @@
 import unittest
-from may import family_scenarios
+from may import family_scenarios, calc_age
 
 class FamilyScenariosTest(unittest.TestCase):
     def test_max_age(self):
@@ -28,6 +28,16 @@ class FamilyScenariosTest(unittest.TestCase):
     def test_uniquenesss2(self):
         kids = [fam for fam in family_scenarios(max_age=2, max_kids=2) if len(fam)==2]
         self.assertEqual(3, len(kids)) # make sure the (2,1) option has been filtered out
+
+    def test_ensure_jack_isnt_too_old(self):
+        kids = family_scenarios(max_age=18, max_kids=5)
+        max_jack = 0
+        for fam in kids:
+            jack_age = calc_age(fam)
+            if(jack_age>max_jack):
+                max_jack = jack_age
+        self.assertTrue(max_jack<117, "Jack is %i. This is too old" % max_jack)
+
 
 if __name__ == '__main__':
     unittest.main()
